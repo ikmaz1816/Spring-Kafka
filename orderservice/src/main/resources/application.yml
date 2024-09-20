@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: producer
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/kafka
+    username: root
+    password: admin
+  kafka:
+    bootstrap-servers: localhost:9092  # Address of your Kafka broker
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer  # Key serializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer  # Value serializer
+      #value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: my-consumer  # Consumer group ID
+      auto-offset-reset: earliest  # Start reading from the earliest offset if no previous offset is found
+      properties:
+        spring.json.trusted.packages: "*"  # Specify trusted packages for deserialization
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer  # Key deserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer  # Value deserializer
+      #value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+server:
+  port: 8082
+
+topic:
+  name: order
+
